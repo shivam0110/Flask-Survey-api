@@ -1,0 +1,33 @@
+create schema survey;
+
+CREATE TABLE `survey`.`survey` (
+  `id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  `topic` VARCHAR(45) NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `survey`.`question` (
+  `id` INT NOT NULL,
+  `question` VARCHAR(85) NOT NULL,
+  `options` VARCHAR(75) NULL,
+  `survey_ref` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `question_ref_idx` (`survey_ref` ASC) VISIBLE,
+  CONSTRAINT `question_ref`
+    FOREIGN KEY (`survey_ref`)
+    REFERENCES `survey`.`survey` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `survey`.`response` (
+  `id` INT NOT NULL,
+  `response` VARCHAR(45) NOT NULL,
+  `ques_ref` INT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `question_ref_idx` (`ques_ref` ASC) VISIBLE,
+  CONSTRAINT `ans_question_ref`
+    FOREIGN KEY (`ques_ref`)
+    REFERENCES `survey`.`question` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
